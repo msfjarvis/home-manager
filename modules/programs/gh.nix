@@ -137,7 +137,7 @@ in {
     home.activation.migrateGhAccounts =
       let ghHosts = "${config.xdg.configHome}/gh/hosts.yml";
       in hm.dag.entryBetween [ "linkGeneration" ] [ "writeBoundary" ] ''
-        if [[ ! -L "${ghHosts}" && -f "${ghHosts}" ]]; then
+        if [[ ! -L "${ghHosts}" && -f "${ghHosts}" && $(grep --quiet 'version: 1' ${ghHosts}) ]]; then
           (
             TMP_DIR=$(mktemp -d)
             trap "rm --force --recursive $TMP_DIR" EXIT
